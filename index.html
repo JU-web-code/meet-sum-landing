@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meet-Sum — Transforme tes réunions en actions</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4F46E5;
+      --primary-dark: #3730A3;
+      --bg: #0F0F13;
+      --surface: #1A1A24;
+      --surface2: #22222F;
+      --text: #F0F0F5;
+      --muted: #8888A8;
+      --border: #2E2E40;
+      --green: #10B981;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 5%;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+      background: rgba(15,15,19,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .logo span { color: var(--primary); }
+    .nav-cta {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--primary-dark); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 6rem 5% 4rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(79,70,229,0.15);
+      border: 1px solid rgba(79,70,229,0.4);
+      color: #A5B4FC;
+      border-radius: 100px;
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 span { color: var(--primary); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.9rem 2.2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .hero-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .hero-sub {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* LOGOS COMPAT */
+    .compat {
+      text-align: center;
+      padding: 2rem 5%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .compat p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .compat-logos { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .compat-logos span {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 1rem;
+      opacity: 0.7;
+    }
+
+    /* PROBLEM */
+    .section { padding: 5rem 5%; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+    .section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .section p.lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+    }
+    .pain-card .icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .pain-card p { font-size: 0.9rem; color: var(--muted); }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem;
+      position: relative;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem; height: 2rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p { font-size: 0.9rem; color: var(--muted); }
+
+    /* FEATURES */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .feature {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem;
+    }
+    .feature .feat-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .feature p { font-size: 0.9rem; color: var(--muted); }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      max-width: 700px;
+    }
+    .plan {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .plan.popular {
+      border-color: var(--primary);
+      background: var(--surface2);
+      position: relative;
+    }
+    .plan-badge {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.9rem;
+      border-radius: 100px;
+    }
+    .plan h3 { font-size: 1rem; font-weight: 700; color: var(--muted); margin-bottom: 0.8rem; }
+    .plan .price { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .plan .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan .plan-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .plan ul { list-style: none; margin-bottom: 2rem; }
+    .plan ul li { font-size: 0.9rem; padding: 0.35rem 0; display: flex; gap: 0.6rem; }
+    .plan ul li::before { content: "✓"; color: var(--green); font-weight: 700; }
+    .plan-btn {
+      display: block;
+      text-align: center;
+      padding: 0.8rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .plan-btn.outlined {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .plan-btn.outlined:hover { border-color: var(--primary); color: var(--primary); }
+    .plan-btn.filled {
+      background: var(--primary);
+      color: #fff;
+    }
+    .plan-btn.filled:hover { background: var(--primary-dark); }
+
+    /* CTA FINAL */
+    .cta-block {
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4rem 5%;
+      margin: 5rem auto;
+      max-width: 700px;
+    }
+    .cta-block h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 1rem; }
+    .cta-block p { color: var(--muted); margin-bottom: 2rem; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 4rem 5% 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">meet<span>-sum</span></div>
+  <a href="https://clerk.meet-sum.com" class="nav-cta">Essayer gratuitement</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✨ Nouveau — Résumé IA de vos réunions</div>
+  <h1>Tes réunions transformées en <span>actions claires</span>, automatiquement.</h1>
+  <p>Upload ton enregistrement, et Meet-Sum génère en secondes : résumé, décisions et actions à suivre.</p>
+  <a href="https://clerk.meet-sum.com" class="hero-cta">Essayer gratuitement →</a>
+  <p class="hero-sub">3 réunions gratuites · Sans carte bancaire</p>
+</section>
+
+<!-- COMPAT -->
+<div class="compat">
+  <p>Compatible avec</p>
+  <div class="compat-logos">
+    <span>Zoom</span>
+    <span>Google Meet</span>
+    <span>Microsoft Teams</span>
+    <span>Fichier audio local</span>
+  </div>
+</div>
+
+<!-- PROBLEME -->
+<div class="section">
+  <div class="section-label">Le problème</div>
+  <h2>Les réunions coûtent cher. Les notes manquent.</h2>
+  <p class="lead">Tu ressors d'une réunion avec une vague idée de ce qu'il faut faire. Les actions se perdent. Les décisions s'oublient.</p>
+  <div class="pain-grid">
+    <div class="pain-card">
+      <div class="icon">⏱</div>
+      <h3>Prise de notes chronophage</h3>
+      <p>Tu passes plus de temps à noter qu'à participer à la réunion.</p>
+    </div>
+    <div class="pain-card">
+      <div class="icon">🔍</div>
+      <h3>Actions qui disparaissent</h3>
+      <p>Impossible de retrouver qui devait faire quoi après une réunion.</p>
+    </div>
+    <div class="pain-card">
+      <div class="icon">📋</div>
+      <h3>Compte-rendu jamais écrit</h3>
+      <p>Le CR prend du temps. Résultat : il n'est souvent jamais envoyé.</p>
+    </div>
+  </div>
+</div>
+
+<!-- COMMENT ÇA MARCHE -->
+<div class="section">
+  <div class="section-label">Comment ça marche</div>
+  <h2>Aussi simple que possible.</h2>
+  <p class="lead">Pas besoin de connecter ta plateforme. Tu uploades, Meet-Sum s'occupe du reste.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Upload ton fichier</h3>
+      <p>Audio ou vidéo de ta réunion, depuis Zoom, Meet, Teams ou ton téléphone.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Transcription automatique</h3>
+      <p>Meet-Sum transcrit le contenu en quelques secondes grâce à l'IA.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Résumé + décisions + actions</h3>
+      <p>Tu reçois un compte-rendu structuré, prêt à partager à ton équipe.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="section">
+  <div class="section-label">Ce que tu obtiens</div>
+  <h2>Tout ce dont tu as besoin.</h2>
+  <p class="lead">En quelques secondes, tu as un compte-rendu complet, structuré et exploitable.</p>
+  <div class="features-grid">
+    <div class="feature">
+      <div class="feat-icon">📝</div>
+      <h3>Résumé clair</h3>
+      <p>Les points essentiels de la réunion, sans le bruit.</p>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">✅</div>
+      <h3>Actions identifiées</h3>
+      <p>Qui fait quoi. Listé automatiquement.</p>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">🧭</div>
+      <h3>Décisions extraites</h3>
+      <p>Ce qui a été décidé, noir sur blanc.</p>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">🔒</div>
+      <h3>Sécurisé</h3>
+      <p>Tes données ne sont pas stockées ni revendues.</p>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">⚡</div>
+      <h3>Rapide</h3>
+      <p>Résultat en quelques secondes, quelle que soit la durée.</p>
+    </div>
+    <div class="feature">
+      <div class="feat-icon">🇫🇷</div>
+      <h3>100% en français</h3>
+      <p>Fait pour les équipes francophones.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section">
+  <div class="section-label">Tarifs</div>
+  <h2>Simple et transparent.</h2>
+  <p class="lead">Commence gratuitement, passe à l'illimité quand tu en as besoin.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <h3>Gratuit</h3>
+      <div class="price">0 €<span> / mois</span></div>
+      <div class="plan-desc">Pour tester sans engagement.</div>
+      <ul>
+        <li>3 réunions par mois</li>
+        <li>Résumé + actions + décisions</li>
+        <li>Fichiers audio et vidéo</li>
+      </ul>
+      <a href="https://clerk.meet-sum.com" class="plan-btn outlined">Commencer gratuitement</a>
+    </div>
+    <div class="plan popular">
+      <div class="plan-badge">Recommandé</div>
+      <h3>Pro</h3>
+      <div class="price">9 €<span> / mois</span></div>
+      <div class="plan-desc">Pour les équipes qui se réunissent souvent.</div>
+      <ul>
+        <li>Réunions illimitées</li>
+        <li>Résumé + actions + décisions</li>
+        <li>Fichiers audio et vidéo</li>
+        <li>Support prioritaire</li>
+      </ul>
+      <a href="https://clerk.meet-sum.com" class="plan-btn filled">Passer au Pro</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-block">
+  <h2>Prêt à arrêter de perdre du temps après chaque réunion ?</h2>
+  <p>Essaye Meet-Sum gratuitement. 3 réunions offertes. Sans carte bancaire.</p>
+  <a href="https://clerk.meet-sum.com" class="hero-cta">Commencer maintenant →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Meet-Sum · <a href="mailto:hello@meet-sum.com" style="color:inherit">hello@meet-sum.com</a></p>
+</footer>
+
+</body>
+</html>
