@@ -7,341 +7,110 @@
   <meta name="description" content="Upload your meeting recording and get a summary, decisions, and action items in seconds. Powered by AI." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --primary: #4F46E5;
-      --primary-dark: #3730A3;
-      --bg: #0F0F13;
-      --surface: #1A1A24;
-      --surface2: #22222F;
-      --text: #F0F0F5;
-      --muted: #8888A8;
-      --border: #2E2E40;
-      --green: #10B981;
+      --primary: #4F46E5; --primary-dark: #3730A3;
+      --bg: #0F0F13; --surface: #1A1A24; --surface2: #22222F;
+      --text: #F0F0F5; --muted: #8888A8; --border: #2E2E40; --green: #10B981;
     }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-    }
-
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; }
     a { color: inherit; text-decoration: none; }
-
-    /* NAV */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 5%;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0;
-      background: rgba(15,15,19,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-    .logo { font-size: 1.2rem; font-weight: 700; color: var(--text); }
-    .logo span { color: var(--primary); }
-    .nav-cta {
-      background: var(--primary);
-      color: #fff;
-      padding: 0.5rem 1.2rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-    .nav-cta:hover { background: var(--primary-dark); }
-
-    /* HERO */
-    .hero {
-      text-align: center;
-      padding: 6rem 5% 4rem;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .hero-badge {
-      display: inline-block;
-      background: rgba(79,70,229,0.15);
-      border: 1px solid rgba(79,70,229,0.4);
-      color: #A5B4FC;
-      border-radius: 100px;
-      padding: 0.3rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 1.2rem;
-    }
-    .hero h1 span { color: var(--primary); }
-    .hero p {
-      font-size: 1.15rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
-    }
-    .hero-cta {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      padding: 0.9rem 2.2rem;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .hero-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
-    .hero-sub {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* LOGOS COMPAT */
-    .compat {
-      text-align: center;
-      padding: 2rem 5%;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .compat p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .compat-logos { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-    .compat-logos span {
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 1rem;
-      opacity: 0.7;
-    }
-
-    /* PROBLEM */
-    .section { padding: 5rem 5%; max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--primary);
-      margin-bottom: 0.8rem;
-    }
-    .section h2 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
-    .section p.lead {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 600px;
-      margin-bottom: 2.5rem;
-    }
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-    }
-    .pain-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.4rem;
-    }
-    .pain-card .icon { font-size: 1.6rem; margin-bottom: 0.8rem; }
-    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .pain-card p { font-size: 0.9rem; color: var(--muted); }
-
-    /* HOW IT WORKS */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-    .step {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.6rem;
-      position: relative;
-    }
-    .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2rem; height: 2rem;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 50%;
-      font-weight: 800;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .step p { font-size: 0.9rem; color: var(--muted); }
-
-    /* FEATURES */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-      margin-top: 2.5rem;
-    }
-    .feature {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.6rem;
-    }
-    .feature .feat-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
-    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .feature p { font-size: 0.9rem; color: var(--muted); }
-
-    /* PRICING */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-      max-width: 700px;
-    }
-    .plan {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-    }
-    .plan.popular {
-      border-color: var(--primary);
-      background: var(--surface2);
-      position: relative;
-    }
-    .plan-badge {
-      position: absolute;
-      top: -12px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.2rem 0.9rem;
-      border-radius: 100px;
-    }
-    .plan h3 { font-size: 1rem; font-weight: 700; color: var(--muted); margin-bottom: 0.8rem; }
-    .plan .price { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.3rem; }
-    .plan .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
-    .plan .plan-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .plan ul { list-style: none; margin-bottom: 2rem; }
-    .plan ul li { font-size: 0.9rem; padding: 0.35rem 0; display: flex; gap: 0.6rem; }
-    .plan ul li::before { content: "✓"; color: var(--green); font-weight: 700; }
-    .plan-btn {
-      display: block;
-      text-align: center;
-      padding: 0.8rem;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      transition: all 0.2s;
-    }
-    .plan-btn.outlined {
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-    .plan-btn.outlined:hover { border-color: var(--primary); color: var(--primary); }
-    .plan-btn.filled {
-      background: var(--primary);
-      color: #fff;
-    }
-    .plan-btn.filled:hover { background: var(--primary-dark); }
-
-    /* CTA FINAL */
-    .cta-block {
-      text-align: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 4rem 5%;
-      margin: 5rem auto;
-      max-width: 700px;
-    }
-    .cta-block h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 1rem; }
-    .cta-block p { color: var(--muted); margin-bottom: 2rem; }
-
-    /* FOOTER */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-
-
-    /* LANG TOGGLE */
-    .lang-toggle {
-      display: flex;
-      gap: 0.25rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.2rem;
-    }
-    .lang-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .lang-btn.active {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    /* EARLY ACCESS FORM */
-    .early-access {
-      margin: 0 auto 4rem;
-      max-width: 500px;
-      text-align: center;
-      padding: 0 5%;
-    }
-    .early-access-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-    }
-    .tally-wrapper {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.2rem 1.5rem 0.5rem;
-    }
 
     /* i18n */
     [data-lang] { display: none; }
     [data-lang].active { display: block; }
     span[data-lang].active { display: inline; }
+    li[data-lang].active { display: flex; }
+
+    /* LANG TOGGLE */
+    .lang-toggle { display: flex; gap: .25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .2rem; }
+    .lang-btn { background: none; border: none; color: var(--muted); font-size: .8rem; font-weight: 600; padding: .25rem .6rem; border-radius: 6px; cursor: pointer; transition: all .15s; }
+    .lang-btn.active { background: var(--primary); color: #fff; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(15,15,19,.92); backdrop-filter: blur(12px); z-index: 100; }
     .nav-left { display: flex; align-items: center; gap: 1rem; }
-    @media (max-width: 600px) {
-      .hero { padding: 4rem 5% 3rem; }
-    }
+    .logo { font-size: 1.2rem; font-weight: 700; }
+    .logo span { color: var(--primary); }
+    .nav-cta { background: var(--primary); color: #fff; padding: .5rem 1.2rem; border-radius: 8px; font-size: .9rem; font-weight: 600; transition: background .2s; }
+    .nav-cta:hover { background: var(--primary-dark); }
+
+    /* HERO */
+    .hero { text-align: center; padding: 6rem 5% 4rem; max-width: 760px; margin: 0 auto; }
+    .hero-badge { display: inline-block; background: rgba(79,70,229,.15); border: 1px solid rgba(79,70,229,.4); color: #A5B4FC; border-radius: 100px; padding: .3rem 1rem; font-size: .8rem; font-weight: 600; margin-bottom: 1.5rem; letter-spacing: .04em; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(2rem,5vw,3.2rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.2rem; }
+    .hero h1 span { color: var(--primary); }
+    .hero p { font-size: 1.15rem; color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem; }
+    .hero-cta { display: inline-block; background: var(--primary); color: #fff; padding: .9rem 2.2rem; border-radius: 10px; font-weight: 700; font-size: 1rem; transition: background .2s, transform .1s; }
+    .hero-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .hero-sub { margin-top: 1rem; font-size: .85rem; color: var(--muted); }
+
+    /* EARLY ACCESS */
+    .early-access { margin: 0 auto 4rem; max-width: 500px; text-align: center; padding: 0 5%; }
+    .early-access-label { font-size: .8rem; color: var(--muted); margin-bottom: .75rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+    .tally-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem .5rem; }
+
+    /* COMPAT */
+    .compat { text-align: center; padding: 2rem 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .compat p { color: var(--muted); font-size: .85rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: .08em; }
+    .compat-logos { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .compat-logos span { color: var(--muted); font-weight: 600; font-size: 1rem; opacity: .7; }
+
+    /* SECTIONS */
+    .section { padding: 5rem 5%; max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--primary); margin-bottom: .8rem; }
+    .section h2 { font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800; margin-bottom: 1rem; }
+    .section .lead { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin-bottom: 2.5rem; }
+
+    /* PAIN */
+    .pain-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; }
+    .pain-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; }
+    .pain-card .icon { font-size: 1.6rem; margin-bottom: .8rem; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .pain-card p { font-size: .9rem; color: var(--muted); }
+
+    /* STEPS */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+    .step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background: var(--primary); color: #fff; border-radius: 50%; font-weight: 800; font-size: .9rem; margin-bottom: 1rem; }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .step p { font-size: .9rem; color: var(--muted); }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1rem; margin-top: 2.5rem; }
+    .feature { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; }
+    .feature .feat-icon { font-size: 1.5rem; margin-bottom: .8rem; }
+    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .feature p { font-size: .9rem; color: var(--muted); }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 1.5rem; margin-top: 2.5rem; max-width: 700px; }
+    .plan { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+    .plan.popular { border-color: var(--primary); background: var(--surface2); position: relative; }
+    .plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; font-size: .75rem; font-weight: 700; padding: .2rem .9rem; border-radius: 100px; }
+    .plan h3 { font-size: 1rem; font-weight: 700; color: var(--muted); margin-bottom: .8rem; }
+    .plan .price { font-size: 2.5rem; font-weight: 800; margin-bottom: .3rem; }
+    .plan .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .plan .plan-desc { font-size: .9rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .plan ul { list-style: none; margin-bottom: 2rem; }
+    .plan ul li { font-size: .9rem; padding: .35rem 0; display: flex; gap: .6rem; }
+    .plan ul li::before { content: "✓"; color: var(--green); font-weight: 700; }
+    .plan-btn { display: block; text-align: center; padding: .8rem; border-radius: 10px; font-weight: 700; font-size: .95rem; transition: all .2s; }
+    .plan-btn.outlined { border: 1px solid var(--border); color: var(--text); }
+    .plan-btn.outlined:hover { border-color: var(--primary); color: var(--primary); }
+    .plan-btn.filled { background: var(--primary); color: #fff; }
+    .plan-btn.filled:hover { background: var(--primary-dark); }
+
+    /* CTA */
+    .cta-block { text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 4rem 5%; margin: 5rem auto; max-width: 700px; }
+    .cta-block h2 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; margin-bottom: 1rem; }
+    .cta-block p { color: var(--muted); margin-bottom: 2rem; }
+
+    footer { text-align: center; padding: 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+    @media (max-width: 600px) { .hero { padding: 4rem 5% 3rem; } }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-left">
     <div class="logo">meet<span>-sum</span></div>
@@ -356,7 +125,6 @@
   </a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-badge">
     <span data-lang="fr" class="active">✨ Nouveau — Résumé IA de vos réunions</span>
@@ -376,40 +144,28 @@
   </p>
 </section>
 
-<!-- EARLY ACCESS FORM -->
 <div class="early-access">
   <p class="early-access-label">
     <span data-lang="fr" class="active">📬 Accès anticipé — Rejoins la liste</span>
     <span data-lang="en">📬 Early access — Join the waitlist</span>
   </p>
   <div class="tally-wrapper">
-    <iframe
-      data-tally-src="https://tally.so/embed/81j6Zr?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-      loading="lazy"
-      width="100%"
-      height="120"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0"
-      title="Get early access to MeetSumm"
-    ></iframe>
+    <iframe data-tally-src="https://tally.so/embed/81j6Zr?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+      loading="lazy" width="100%" height="120" frameborder="0" marginheight="0" marginwidth="0"
+      title="Get early access to MeetSumm"></iframe>
   </div>
 </div>
 
-<!-- COMPAT -->
 <div class="compat">
   <p data-lang="fr" class="active">Compatible avec</p>
   <p data-lang="en">Works with</p>
   <div class="compat-logos">
-    <span>Zoom</span>
-    <span>Google Meet</span>
-    <span>Microsoft Teams</span>
+    <span>Zoom</span><span>Google Meet</span><span>Microsoft Teams</span>
     <span data-lang="fr" class="active">Fichier audio local</span>
     <span data-lang="en">Local audio file</span>
   </div>
 </div>
 
-<!-- PROBLEME / PROBLEM -->
 <div class="section">
   <div class="section-label">
     <span data-lang="fr" class="active">Le problème</span>
@@ -417,7 +173,7 @@
   </div>
   <h2 data-lang="fr" class="active">Les réunions coûtent cher. Les notes manquent.</h2>
   <h2 data-lang="en">Meetings are expensive. Notes are missing.</h2>
-  <p class="lead" data-lang="fr" class="active">Tu ressors d'une réunion avec une vague idée de ce qu'il faut faire. Les actions se perdent. Les décisions s'oublient.</p>
+  <p class="lead active" data-lang="fr">Tu ressors d'une réunion avec une vague idée de ce qu'il faut faire. Les actions se perdent. Les décisions s'oublient.</p>
   <p class="lead" data-lang="en">You leave meetings with a vague sense of what needs to happen. Action items get lost. Decisions are forgotten.</p>
   <div class="pain-grid">
     <div class="pain-card">
@@ -444,121 +200,168 @@
   </div>
 </div>
 
-<!-- COMMENT ÇA MARCHE -->
 <div class="section">
-  <div class="section-label">Comment ça marche</div>
-  <h2>Aussi simple que possible.</h2>
-  <p class="lead">Pas besoin de connecter ta plateforme. Tu uploades, Meet-Sum s'occupe du reste.</p>
+  <div class="section-label">
+    <span data-lang="fr" class="active">Comment ça marche</span>
+    <span data-lang="en">How it works</span>
+  </div>
+  <h2 data-lang="fr" class="active">Aussi simple que possible.</h2>
+  <h2 data-lang="en">As simple as it gets.</h2>
+  <p class="lead active" data-lang="fr">Pas besoin de connecter ta plateforme. Tu uploades, Meet-Sum s'occupe du reste.</p>
+  <p class="lead" data-lang="en">No integrations needed. Upload your file — Meet-Sum handles the rest.</p>
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
-      <h3>Upload ton fichier</h3>
-      <p>Audio ou vidéo de ta réunion, depuis Zoom, Meet, Teams ou ton téléphone.</p>
+      <h3 data-lang="fr" class="active">Upload ton fichier</h3>
+      <h3 data-lang="en">Upload your file</h3>
+      <p data-lang="fr" class="active">Audio ou vidéo de ta réunion, depuis Zoom, Meet, Teams ou ton téléphone.</p>
+      <p data-lang="en">Audio or video from Zoom, Meet, Teams, or your phone.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <h3>Transcription automatique</h3>
-      <p>Meet-Sum transcrit le contenu en quelques secondes grâce à l'IA.</p>
+      <h3 data-lang="fr" class="active">L'IA transcrit et analyse</h3>
+      <h3 data-lang="en">AI transcribes and analyzes</h3>
+      <p data-lang="fr" class="active">Meet-Sum transcrit le contenu en quelques secondes grâce à l'IA.</p>
+      <p data-lang="en">Meet-Sum transcribes and processes your content in seconds.</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <h3>Résumé + décisions + actions</h3>
-      <p>Tu reçois un compte-rendu structuré, prêt à partager à ton équipe.</p>
+      <h3 data-lang="fr" class="active">Reçois ton compte-rendu</h3>
+      <h3 data-lang="en">Get your summary</h3>
+      <p data-lang="fr" class="active">Tu reçois un compte-rendu structuré, prêt à partager à ton équipe.</p>
+      <p data-lang="en">You get a structured summary ready to share with your team.</p>
     </div>
   </div>
 </div>
 
-<!-- FEATURES -->
 <div class="section">
-  <div class="section-label">Ce que tu obtiens</div>
-  <h2>Tout ce dont tu as besoin.</h2>
-  <p class="lead">En quelques secondes, tu as un compte-rendu complet, structuré et exploitable.</p>
+  <div class="section-label">
+    <span data-lang="fr" class="active">Ce que tu obtiens</span>
+    <span data-lang="en">What you get</span>
+  </div>
+  <h2 data-lang="fr" class="active">En quelques secondes, tu as un compte-rendu complet, structuré et exploitable.</h2>
+  <h2 data-lang="en">In seconds, a complete, structured meeting report.</h2>
+  <p class="lead active" data-lang="fr">Structuré et exploitable.</p>
+  <p class="lead" data-lang="en">Ready to use, ready to share.</p>
   <div class="features-grid">
     <div class="feature">
       <div class="feat-icon">📝</div>
-      <h3>Résumé clair</h3>
-      <p>Les points essentiels de la réunion, sans le bruit.</p>
+      <h3 data-lang="fr" class="active">Résumé intelligent</h3>
+      <h3 data-lang="en">Smart summary</h3>
+      <p data-lang="fr" class="active">Les points essentiels de la réunion, sans le bruit.</p>
+      <p data-lang="en">The key points from the meeting, without the noise.</p>
     </div>
     <div class="feature">
       <div class="feat-icon">✅</div>
-      <h3>Actions identifiées</h3>
-      <p>Qui fait quoi. Listé automatiquement.</p>
+      <h3 data-lang="fr" class="active">Actions à suivre</h3>
+      <h3 data-lang="en">Action items</h3>
+      <p data-lang="fr" class="active">Qui fait quoi. Listé automatiquement.</p>
+      <p data-lang="en">Who does what. Listed automatically.</p>
     </div>
     <div class="feature">
-      <div class="feat-icon">🧭</div>
-      <h3>Décisions extraites</h3>
-      <p>Ce qui a été décidé, noir sur blanc.</p>
+      <div class="feat-icon">🎯</div>
+      <h3 data-lang="fr" class="active">Décisions prises</h3>
+      <h3 data-lang="en">Decisions made</h3>
+      <p data-lang="fr" class="active">Ce qui a été décidé, noir sur blanc.</p>
+      <p data-lang="en">What was decided, in black and white.</p>
     </div>
     <div class="feature">
       <div class="feat-icon">🔒</div>
-      <h3>Sécurisé</h3>
-      <p>Tes données ne sont pas stockées ni revendues.</p>
+      <h3 data-lang="fr" class="active">Respect de ta vie privée</h3>
+      <h3 data-lang="en">Privacy-first</h3>
+      <p data-lang="fr" class="active">Tes données ne sont pas stockées ni revendues.</p>
+      <p data-lang="en">Your data is never stored or sold.</p>
     </div>
     <div class="feature">
       <div class="feat-icon">⚡</div>
-      <h3>Rapide</h3>
-      <p>Résultat en quelques secondes, quelle que soit la durée.</p>
+      <h3 data-lang="fr" class="active">Ultra-rapide</h3>
+      <h3 data-lang="en">Lightning fast</h3>
+      <p data-lang="fr" class="active">Résultat en quelques secondes, quelle que soit la durée.</p>
+      <p data-lang="en">Results in seconds, regardless of meeting length.</p>
     </div>
     <div class="feature">
-      <div class="feat-icon">🇫🇷</div>
-      <h3>100% en français</h3>
-      <p>Fait pour les équipes francophones.</p>
+      <div class="feat-icon">🌍</div>
+      <h3 data-lang="fr" class="active">Fait pour le français</h3>
+      <h3 data-lang="en">Multilingual support</h3>
+      <p data-lang="fr" class="active">Fait pour les équipes francophones.</p>
+      <p data-lang="en">Works with French and English meetings.</p>
     </div>
   </div>
 </div>
 
-<!-- PRICING -->
 <div class="section">
-  <div class="section-label">Tarifs</div>
-  <h2>Simple et transparent.</h2>
-  <p class="lead">Commence gratuitement, passe à l'illimité quand tu en as besoin.</p>
+  <div class="section-label">
+    <span data-lang="fr" class="active">Tarifs</span>
+    <span data-lang="en">Pricing</span>
+  </div>
+  <h2 data-lang="fr" class="active">Commence gratuitement, passe à l'illimité quand tu en as besoin.</h2>
+  <h2 data-lang="en">Start free, go unlimited when you need it.</h2>
   <div class="pricing-grid">
     <div class="plan">
-      <h3>Gratuit</h3>
-      <div class="price">0 €<span> / mois</span></div>
-      <div class="plan-desc">Pour tester sans engagement.</div>
+      <h3>Free</h3>
+      <div class="price">0€ <span data-lang="fr" class="active">/ toujours</span><span data-lang="en">/ forever</span></div>
+      <p class="plan-desc active" data-lang="fr">Pour découvrir Meet-Sum</p>
+      <p class="plan-desc" data-lang="en">To try Meet-Sum</p>
       <ul>
-        <li>3 réunions par mois</li>
-        <li>Résumé + actions + décisions</li>
-        <li>Fichiers audio et vidéo</li>
+        <li data-lang="fr" class="active">3 réunions par mois</li>
+        <li data-lang="en">3 meetings per month</li>
+        <li data-lang="fr" class="active">Résumé + actions + décisions</li>
+        <li data-lang="en">Summary + actions + decisions</li>
+        <li data-lang="fr" class="active">Sans carte bancaire</li>
+        <li data-lang="en">No credit card required</li>
       </ul>
-      <a href="https://app.meet-sum.com" class="plan-btn outlined">Commencer gratuitement</a>
+      <a href="https://app.meet-sum.com" class="plan-btn outlined">
+        <span data-lang="fr" class="active">Commencer gratuitement</span>
+        <span data-lang="en">Get started free</span>
+      </a>
     </div>
     <div class="plan popular">
-      <div class="plan-badge">Recommandé</div>
+      <div class="plan-badge">
+        <span data-lang="fr" class="active">Populaire</span>
+        <span data-lang="en">Popular</span>
+      </div>
       <h3>Pro</h3>
-      <div class="price">9 €<span> / mois</span></div>
-      <div class="plan-desc">Pour les équipes qui se réunissent souvent.</div>
+      <div class="price">9€ <span>/ mois</span></div>
+      <p class="plan-desc active" data-lang="fr">Pour les équipes actives</p>
+      <p class="plan-desc" data-lang="en">For active teams</p>
       <ul>
-        <li>Réunions illimitées</li>
-        <li>Résumé + actions + décisions</li>
-        <li>Fichiers audio et vidéo</li>
-        <li>Support prioritaire</li>
+        <li data-lang="fr" class="active">Réunions illimitées</li>
+        <li data-lang="en">Unlimited meetings</li>
+        <li data-lang="fr" class="active">Fichiers jusqu'à 2h</li>
+        <li data-lang="en">Files up to 2 hours</li>
+        <li data-lang="fr" class="active">Export PDF & email</li>
+        <li data-lang="en">PDF & email export</li>
+        <li data-lang="fr" class="active">Support prioritaire</li>
+        <li data-lang="en">Priority support</li>
       </ul>
-      <a href="https://app.meet-sum.com" class="plan-btn filled">Passer au Pro</a>
+      <a href="https://app.meet-sum.com" class="plan-btn filled">
+        <span data-lang="fr" class="active">Commencer l'essai</span>
+        <span data-lang="en">Start trial</span>
+      </a>
     </div>
   </div>
 </div>
 
-<!-- CTA FINAL -->
 <div class="cta-block">
-  <h2>Prêt à arrêter de perdre du temps après chaque réunion ?</h2>
-  <p>Essaye Meet-Sum gratuitement. 3 réunions offertes. Sans carte bancaire.</p>
-  <a href="https://app.meet-sum.com" class="hero-cta">Commencer maintenant →</a>
+  <h2 data-lang="fr" class="active">Essaye Meet-Sum gratuitement.</h2>
+  <h2 data-lang="en">Try Meet-Sum for free.</h2>
+  <p data-lang="fr" class="active">3 réunions offertes. Sans carte bancaire.</p>
+  <p data-lang="en">3 free meetings. No credit card needed.</p>
+  <a href="https://app.meet-sum.com" class="hero-cta">
+    <span data-lang="fr" class="active">Commencer maintenant →</span>
+    <span data-lang="en">Get started now →</span>
+  </a>
 </div>
 
-<!-- FOOTER -->
 <footer>
-  <p>© 2026 Meet-Sum · <a href="mailto:hello@meet-sum.com" style="color:inherit">hello@meet-sum.com</a></p>
+  <p>© 2026 Meet-Sum · <a href="mailto:hello@meet-sum.com" style="color:var(--primary)">hello@meet-sum.com</a></p>
 </footer>
 
 <script>
-  // Tally embed loader
-  var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+  var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]') ==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
 
-  // Language toggle
   function setLang(lang) {
-    document.querySelectorAll('[data-lang]').forEach(el => {
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
       el.classList.toggle('active', el.dataset.lang === lang);
     });
     document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
@@ -566,11 +369,8 @@
     document.documentElement.lang = lang;
   }
 
-  // Auto-detect: default EN for non-French browsers
-  var browserLang = navigator.language || navigator.userLanguage;
-  if (!browserLang.startsWith('fr')) {
-    setLang('en');
-  }
+  // Auto-detect: EN for non-French browsers
+  if (!(navigator.language || '').startsWith('fr')) { setLang('en'); }
 </script>
 </body>
 </html>
